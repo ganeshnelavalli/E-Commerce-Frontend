@@ -4,8 +4,10 @@ import App from './App'
 import { BrowserRouter } from 'react-router-dom'
 import './styles.css'
 import axios from "axios";
+import { API_BASE_URL } from './config';
 
 axios.defaults.withCredentials = true;
+axios.defaults.baseURL = API_BASE_URL;
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
