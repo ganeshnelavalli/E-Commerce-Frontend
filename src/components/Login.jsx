@@ -109,10 +109,23 @@ export default function Auth({ setAuth }) {
     e.preventDefault();
     setError("");
     setSuccess("");
+    
+    // Validate form
+    if (!registerData.username || !registerData.email || !registerData.password) {
+      setError("Username, email, and password are required");
+      return;
+    }
+    
     try {
       const res = await axios.post(API_BASE + "register/", registerData);
       if (res.data.success) {
         setSuccess("Registration successful! You can now log in.");
+        // Auto-fill login form with registration data
+        setLoginData({
+          email: registerData.email,
+          password: registerData.password
+        });
+        // Clear registration form
         setRegisterData({
           first_name: "",
           last_name: "",
@@ -120,7 +133,21 @@ export default function Auth({ setAuth }) {
           email: "",
           password: "",
         });
+        // Switch to login view
         setIsLogin(true);
+        // Attempt automatic login
+        try {
+          const loginRes = await axios.post(API_BASE + "login/", {
+            email: registerData.email,
+            password: registerData.password
+          });
+          if (loginRes.data.success) {
+            await axios.get(API_BASE + 'session/');
+            setAuth(true);
+          }
+        } catch (loginErr) {
+          // Silent fail - user can still login manually
+        }
       }
     } catch (err) {
       setError(err.response?.data?.error || "Registration failed.");
