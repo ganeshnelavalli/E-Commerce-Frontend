@@ -4,12 +4,10 @@ import App from './App'
 import { BrowserRouter } from 'react-router-dom'
 import './styles.css'
 import axios from "axios";
-
-// Use the API URL defined in vite.config.js
-const API_URL = import.meta.env.PROD ? __API_BASE_URL__ : '';
+import { getApiUrl } from './config';
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = API_URL;
+axios.defaults.baseURL = getApiUrl();
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
