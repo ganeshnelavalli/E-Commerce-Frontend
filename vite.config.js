@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5174,
     proxy: {
       '/api': {
-        target: 'https://e-commerce-backend-3ccf.onrender.com/api',
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
         secure: false,
       },
